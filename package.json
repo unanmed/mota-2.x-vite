@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc && vite build && ts-node-esm script/compress.ts",
     "preview": "vite preview",
-    "preview-node": "cd dist && node server.cjs"
+    "preview-node": "cd dist && node server.cjs",
+    "update": "ts-node-esm script/update.ts"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
