@@ -2532,31 +2532,32 @@ var plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1 = {
         // 初始化
         (async function () {
             const data = await post('/reload', 'POST', 'test');
-            if (data === '@error')
+            if (data === '@error') {
                 console.log(`未检测到node服务，热重载插件将无法使用`);
-            else console.log(`热重载插件加载成功`);
+            } else {
+                console.log(`热重载插件加载成功`);
+                // reload
+                setInterval(async () => {
+                    const res = await post('/reload', 'POST');
+                    if (res === '@error') return;
+                    if (res === 'true') location.reload();
+                    else return;
+                }, 1000);
+
+                // hot reload
+                setInterval(async () => {
+                    const res = await post('/hotReload', 'POST');
+                    const data = res.split('@@');
+                    data.forEach(v => {
+                        if (v === '') return;
+                        const [type, file] = v.split(':');
+                        if (type === 'css') reloadCss(file);
+                        if (type === 'data') reloadData(file);
+                        if (type === 'floor') reloadFloor(file);
+                        if (type === 'script') reloadScript(file);
+                    });
+                }, 1000);
+            }
         })();
-
-        // reload
-        setInterval(async () => {
-            const res = await post('/reload', 'POST');
-            if (res === '@error') return;
-            if (res === 'true') location.reload();
-            else return;
-        }, 1000);
-
-        // hot reload
-        setInterval(async () => {
-            const res = await post('/hotReload', 'POST');
-            const data = res.split('@@');
-            data.forEach(v => {
-                if (v === '') return;
-                const [type, file] = v.split(':');
-                if (type === 'css') reloadCss(file);
-                if (type === 'data') reloadData(file);
-                if (type === 'floor') reloadFloor(file);
-                if (type === 'script') reloadScript(file);
-            });
-        }, 1000);
     }
 };

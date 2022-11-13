@@ -76,13 +76,13 @@ async function getFile(req, res, path) {
  * @param {string} join 分隔符
  */
 async function getAll(req, res, ids, suffix, dir, join) {
-    let data = [];
+    let data = {};
     const tasks = ids.map(v => {
         return new Promise(res => {
             const d = path.resolve(__dirname, `${dir}${v}${suffix}`);
             try {
-                fs.readFile(d, 'utf-8').then(v => {
-                    data.push(v);
+                fs.readFile(d).then(vv => {
+                    data[v] = vv;
                     res(`${v} pack success.`);
                 });
             } catch {
@@ -91,7 +91,8 @@ async function getAll(req, res, ids, suffix, dir, join) {
         });
     });
     await Promise.all(tasks);
-    return res.end(data.join(join)), true;
+    const result = ids.map(v => data[v]);
+    return res.end(result.join(join)), true;
 }
 
 // ----- 样板的fs功能

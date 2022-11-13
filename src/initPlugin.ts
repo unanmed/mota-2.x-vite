@@ -2,7 +2,7 @@
 import pop from './plugin/template';
 
 window.addEventListener('load', () => {
-    // 每个引入的插件都要在这里执行，否则不会倍
+    // 每个引入的插件都要在这里执行，否则不会被转发
     const toForward = [pop()];
 
     // 初始化所有插件，并转发到core上
