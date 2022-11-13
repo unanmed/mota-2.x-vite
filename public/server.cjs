@@ -559,14 +559,14 @@ async function replaySave(req, res) {
 // ----- server
 
 server.on('listening', () => {
-    console.log(`服务已启动，游戏地址：http://127.0.0.1:${port}/`);
-    console.log(`编辑器地址：http://127.0.0.1:${port}/editor.html`);
+    console.log(`服务已启动，编辑器地址：http://127.0.0.1:${port}/editor.html`);
+    console.log(`游戏请在 vite 提供的网址中打开`);
 });
 
 // 处理请求
 server.on('request', async (req, res) => {
     /** @type {string} */
-    const p = req.url.replace(`/games/${name}`, '');
+    const p = req.url.replace(`/games/${name}`, '').replace('/all/', '/');
 
     if (req.method === 'GET') {
         const dir = path
