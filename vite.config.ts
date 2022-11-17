@@ -24,7 +24,7 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     antdv: ['ant-design-vue', '@ant-design/icons-vue'],
-                    common: ['lodash', 'axios', 'lz-string', 'vue']
+                    common: ['lodash', 'axios', 'lz-string']
                 }
             }
         }
