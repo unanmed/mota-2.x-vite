@@ -1,5 +1,5 @@
 /**@file events.js将处理所有和事件相关的操作。 */
-declare class events {
+interface Events {
     /**
      * 开始新游戏
      * @example core.startGame('咸鱼乱撞', 0, ''); // 开始一局咸鱼乱撞难度的新游戏，随机种子为0
@@ -85,7 +85,7 @@ declare class events {
     changeFloor(
         floorId: string,
         stair?: string,
-        heroLoc?: { x?: number; y?: number; direction?: direction },
+        heroLoc?: { x?: number; y?: number; direction?: Dir },
         time?: number,
         callback?: () => void
     ): void;
@@ -313,7 +313,7 @@ declare class events {
      * @param time 每步的用时，单位为毫秒。0或不填则取主角的移速，如果后者也不存在就取0.1秒
      * @param callback 移动完毕后的回调函数，可选
      */
-    eventMoveHero(steps: step[], time?: number, callback?: () => void): void;
+    eventMoveHero(steps: Step[], time?: number, callback?: () => void): void;
 
     /**
      * 主角跳跃，跳跃勇士。ex和ey为目标点的坐标，可以为null表示原地跳跃。time为总跳跃时间。
@@ -576,3 +576,5 @@ declare class events {
     /** 检查升级事件 */
     checkLvUp(): void;
 }
+
+declare const events: new () => Events;

@@ -1,5 +1,5 @@
 /** @file loader.js 主要负责资源的加载 */
-declare class loader {
+interface Loader {
     /** 加载一系列图片 */
     loadImages(dir: any, names: any, toSave: any, callback?: () => any): any;
 
@@ -27,3 +27,5 @@ declare class loader {
     /** 释放一个bgm的缓存 */
     freeBgm(name?: string): any;
 }
+
+declare const loader: new () => Loader;

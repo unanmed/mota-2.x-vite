@@ -1,5 +1,5 @@
 /** @file ui.js 主要用来进行UI窗口的绘制，如对话框、怪物手册、楼传器、存读档界面等等。*/
-declare class ui {
+interface Ui {
     /**
      * 根据画布名找到一个画布的context；支持系统画布和自定义画布。如果不存在画布返回null。
      * 也可以传画布的context自身，则返回自己。
@@ -487,3 +487,5 @@ declare class ui {
         font?: string
     ): number;
 }
+
+declare const ui: new () => Ui;

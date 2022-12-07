@@ -1,5 +1,5 @@
 /** @file enemys.js 定义了一系列和敌人相关的API函数。 */
-declare class enemys {
+interface Enemys {
     /**
      * 判定某种特殊属性的有无
      * @example core.hasSpecial('greenSlime', 1) // 判定绿头怪有无先攻属性
@@ -200,3 +200,5 @@ declare class enemys {
         [x: string]: any;
     };
 }
+
+declare const enemys: new () => Enemys;

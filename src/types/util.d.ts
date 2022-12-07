@@ -1,5 +1,5 @@
 /** 工具类 主要用来进行一些辅助函数的计算 */
-declare class utils {
+interface Utils {
     /**
      * 将一段文字中的${}（表达式）进行替换。
      * @example core.replaceText('衬衫的价格是${status:hp}镑${item:yellowKey}便士。'); // 把主角的生命值和持有的黄钥匙数量代入这句话
@@ -383,11 +383,65 @@ declare class utils {
     ): void;
 }
 
+declare const utils: new () => Utils;
+
+/**
+ * 移动的方向
+ */
+type Step = Move | 'backward';
+
+/**
+ * 坐标字符串
+ */
+type LocString = `${number},${number}`;
+
+type _RGBA =
+    | `rgb(${number},${number},${number})`
+    | `rgba(${number},${number},${number},${number})`;
+
+/**
+ * RGBA颜色数组
+ */
+type RGBArray = [number, number, number, number?];
+
+/**
+ * 样板的颜色字符串
+ */
+type Color = `#${string}` | _RGBA | [number, number, number, number?];
+
+/**
+ * 四个方向
+ */
+type Dir = 'up' | 'down' | 'left' | 'right';
+
+/**
+ * 八个方向
+ */
+type Dir2 = Dir | 'leftup' | 'rightup' | 'leftdown' | 'rightdown';
+
+/**
+ * 移动的方向
+ */
+type Move = 'forward' | Dir;
+
+/**
+ * 位置
+ */
+type Loc = {
+    x: number;
+    y: number;
+};
+
+/**
+ * 带方向的位置
+ */
+type DiredLoc = Loc & { direction: Dir };
+
 interface TextContentConfig {
     left?: number;
     top?: number;
     maxWidth?: number;
-    color?: rgbarray | string;
+    color?: RGBArray | string;
     align?: 'left' | 'center' | 'right';
     fontSize: number;
     lineHeight?: number;
@@ -398,20 +452,13 @@ interface TextContentConfig {
     italic?: boolean;
 }
 
-type direction = 'up' | 'down' | 'left' | 'right';
-type move = 'forward' | direction;
-type loc = { direction: direction; x: number; y: number };
-type rgbarray = [number, number, number, number];
-
-type Events = MotaAction[] | string;
-
-type Block = {
+type Block<N extends AllNumbers = AllNumbers> = {
     x: number;
     y: number;
-    id: number;
+    id: N;
     event: {
-        cls: string;
-        id: string;
+        cls: ClsOf<NumberToId[N]>;
+        id: NumberToId[N];
         [key: string]: any;
     };
 };
@@ -426,11 +473,7 @@ type frameObj = {
     zoom: number;
 };
 
-type CtxRefer =
-    | string
-    | CanvasRenderingContext2D
-    | HTMLCanvasElement
-    | HTMLImageElement;
+type CtxRefer = string | CanvasRenderingContext2D | HTMLCanvasElement;
 
 type Animate = {
     frame: number;
@@ -445,8 +488,8 @@ type Floor = {
     ratio: number;
 };
 
-type ResolvedMap = {
-    floorId: string;
+type ResolvedMap<T extends FloorIds = FloorIds> = {
+    floorId: T;
     afterBattle: { [x: string]: Events };
     afterOpenDoor: { [x: string]: Events };
     afterGetItem: { [x: string]: Events };
@@ -530,14 +573,52 @@ type Item = {
     [key: string]: any;
 };
 
-type Save = {};
+type Save = DeepReadonly<{
+    /**
+     * 存档所在的楼层id
+     */
+    floorId: string;
 
-type MotaAction =
-    | {
-          type: string;
-          [key: string]: any;
-      }
-    | string;
+    /**
+     * 存档的勇士信息
+     */
+    hero: HeroStatus;
+
+    /**
+     * 难度信息
+     */
+    hard: number;
+
+    /**
+     * 存档的地图信息，已经过压缩处理
+     */
+    maps: Record<string, ResolvedMap>;
+
+    /**
+     * 录像信息
+     */
+    route: string;
+
+    /**
+     * 存档的全局变量信息
+     */
+    values: CoreValues;
+
+    /**
+     * 游戏版本
+     */
+    version: string;
+
+    /**
+     * 浏览器唯一guid
+     */
+    guid: string;
+
+    /**
+     * 存档时间
+     */
+    time: number;
+}>;
 
 type SystemFlags = {
     enableXxx: boolean;
@@ -549,6 +630,59 @@ type SystemFlags = {
     blurFg: boolean;
 };
 
-type event = { type: string; [key: string]: any };
+/**
+ * 深度只读一个对象，使其所有属性都只读
+ */
+type DeepReadonly<T> = {
+    readonly [P in keyof T]: T[P] extends number | string | boolean
+        ? T[P]
+        : DeepReadonly<T[P]>;
+};
 
-type step = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
+/**
+ * 深度可选一个对象，使其所有属性都可选
+ */
+type DeepPartial<T> = {
+    [P in keyof T]?: T[P] extends number | string | boolean
+        ? T[P]
+        : DeepReadonly<T[P]>;
+};
+
+/**
+ * 深度必选一个对象，使其所有属性都必选
+ */
+type DeepRequired<T> = {
+    [P in keyof T]-?: T[P] extends number | string | boolean
+        ? T[P]
+        : DeepReadonly<T[P]>;
+};
+
+/**
+ * 使一个对象的所有属性可写
+ */
+type Writable<T> = {
+    -readonly [P in keyof T]: P[T];
+};
+
+/**
+ * 深度可写一个对象，使其所有属性都可写
+ */
+type DeepWritable<T> = {
+    -readonly [P in keyof T]: T[P] extends number | string | boolean
+        ? T[P]
+        : DeepReadonly<T[P]>;
+};
+
+/**
+ * 从一个对象中选择类型是目标类型的属性
+ */
+type SelectType<R, T> = {
+    [P in keyof R as R[P] extends T ? P : never]: R[P];
+};
+
+/**
+ * 获取一段字符串的第一个字符
+ */
+type FirstCharOf<T extends string> = T extends `${infer F}${infer A}`
+    ? F
+    : never;

@@ -1,5 +1,5 @@
 /** @file items.js 主要负责一切和道具相关的内容。 */
-declare class items {
+interface Items {
     /**
      * 即捡即用类的道具获得时的效果
      * @example core.getItemEffect('redPotion', 10) // 执行获得10瓶红血的效果
@@ -168,3 +168,5 @@ declare class items {
         prefix?: string
     ): void;
 }
+
+declare const items: new () => Items;

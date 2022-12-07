@@ -21,8 +21,9 @@ var data_a1e2fb4a_e986_4524_b0da_9b7ba7c0874d =
 		],
 		"animates": [
 			"hand",
+			"jianji",
 			"sword",
-			"zone"
+			"thunder"
 		],
 		"bgms": [
 			"bgm.mp3"
@@ -764,7 +765,7 @@ var data_a1e2fb4a_e986_4524_b0da_9b7ba7c0874d =
 		"betweenAttackMax": false,
 		"useLoop": false,
 		"startUsingCanvas": false,
-		"statusCanvas": true,
+		"statusCanvas": false,
 		"enableEnemyPoint": true,
 		"enableGentleClick": true,
 		"ignoreChangeFloor": true,

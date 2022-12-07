@@ -1,3 +1,5 @@
+///<reference path="../src/types/core.d.ts"/>
+
 function main() {
     //------------------------ 用户修改内容 ------------------------//
 
@@ -339,7 +341,7 @@ main.prototype.loadJs = function (dir, loadList, callback) {
 };
 
 ////// 加载某一个JS文件 //////
-main.prototype.loadMod = function (dir, modName, callback, onerror) {
+main.prototype.loadMod = function (dir, modName, callback) {
     var script = document.createElement('script');
     var name = modName;
     script.src =

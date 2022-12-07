@@ -2156,8 +2156,8 @@ var plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1 = {
                 sprites[this.name] = this;
             }
 
-            setCss(css) {
-                css = css.replace('\n', ';').replace(';;', ';');
+            css(css) {
+               css = css.replace('\n', ';').replace(';;', ';');
                 const effects = css.split(';');
                 const canvas = this.canvas;
                 effects.forEach(v => {
@@ -2174,7 +2174,11 @@ var plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1 = {
                         }, '');
                     if (name in canvas.style) canvas.style[name] = value;
                 });
-                return this;
+                return this; 
+            }
+
+            setCss(css) {
+                return this.css(css);
             }
 
             move(x, y, isDelta) {
@@ -2232,6 +2236,10 @@ var plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1 = {
                 sprites[this.name] = void 0;
             }
 
+            clear(x, y, w, h) {
+                core.clearMap(this.context, x, y, w, h);
+            }
+
             /**
              * 类似样板registerAction接口，但是是以该sprite的左上角为(0,0)计算的
              * @param {keyof HTMLElementEventMap} type
@@ -2243,17 +2251,12 @@ var plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1 = {
                         `当sprite的reference为window时，不可使用该函数`
                     );
                 const mouse = [
-                    'auxclick',
                     'click',
-                    'contextmenu',
-                    'dblclick',
                     'mousedown',
                     'mouseup',
                     'mouseenter',
                     'mouseleave',
                     'mousemove',
-                    'mouseout',
-                    'mouseover'
                 ];
                 const key = ['keydown', 'keypress', 'keyup'];
                 const touch = [

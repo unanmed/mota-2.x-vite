@@ -1,3 +1,4 @@
+///<reference path="../../src/types/core.d.ts"/>
 
 /*
 control.js：游戏主要逻辑控制
@@ -3265,7 +3266,7 @@ control.prototype.resize = function () {
     var clientWidth = main.dom.body.clientWidth, clientHeight = main.dom.body.clientHeight;
     var BORDER = 3;
     var extendToolbar = core.flags.extendToolbar;
-    var BAR_WIDTH = extendToolbar ? 0 : Math.round(core._PY_ * 0.3);
+    var BAR_WIDTH = extendToolbar ? 0 : Math.round(core._PY_ * 0.31);
 
     var horizontalMaxRatio = (clientHeight - 2 * BORDER - (extendToolbar ? BORDER : 0)) / (core._PY_ + (extendToolbar ? 38 : 0));
 

@@ -1,3 +1,4 @@
+///<reference path="../../src/types/core.d.ts"/>
 
 /**
  * 初始化 start

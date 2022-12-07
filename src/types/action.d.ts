@@ -1,5 +1,5 @@
 /** @file actions.js 定义了玩家的操作控制 */
-declare class actions {
+interface Actions {
     /**
      * 此函数将注册一个用户交互行为。
      * @param action 要注册的交互类型，如 ondown, onclick, keyDown 等等。
@@ -72,3 +72,5 @@ declare class actions {
     /** 点击自绘状态栏时 */
     onStatusBarClick(e?: MouseEvent): void;
 }
+
+declare const actions: new () => Actions;

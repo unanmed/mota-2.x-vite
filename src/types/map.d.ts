@@ -1,5 +1,5 @@
 /** @file maps.js负责一切和地图相关的处理内容 */
-declare class maps {
+interface Maps {
     /**
      * 根据图块id得到数字（地图矩阵中的值）
      * @example core.getNumberById('yellowWall'); // 1
@@ -74,7 +74,7 @@ declare class maps {
      * @param floorId 地图id，不填视为当前地图
      * @returns 从各点可移动方向的三维数组
      */
-    generateMovableArray(floorId?: string): Array<Array<Array<direction>>>;
+    generateMovableArray(floorId?: string): Array<Array<Array<Dir>>>;
 
     /**
      * 单点单朝向的可通行性判定
@@ -88,7 +88,7 @@ declare class maps {
     canMoveHero(
         x?: number,
         y?: number,
-        direction?: direction,
+        direction?: Dir,
         floorId?: string
     ): boolean;
 
@@ -111,7 +111,7 @@ declare class maps {
     automaticRoute(
         destX: number,
         destY: number
-    ): Array<{ direction: direction; x: number; y: number }>;
+    ): Array<{ direction: Dir; x: number; y: number }>;
 
     /**
      * 地图绘制
@@ -373,7 +373,7 @@ declare class maps {
     moveBlock(
         x: number,
         y: number,
-        steps: step[],
+        steps: Step[],
         time?: number,
         keep?: boolean,
         callback?: () => void
@@ -600,3 +600,5 @@ declare class maps {
     /** 绘制UI层的box动画 */
     drawBoxAnimate(): void;
 }
+
+declare const maps: new () => Maps;

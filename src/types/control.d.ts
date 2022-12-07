@@ -1,5 +1,5 @@
 /** @file control.js 主要用来进行游戏控制，比如行走控制、自动寻路、存读档等等游戏核心内容。 */
-declare class control {
+interface Control {
     /**
      * 开启调试模式, 此模式下可以按Ctrl键进行穿墙, 并忽略一切事件。
      * 此模式下不可回放录像和上传成绩。
@@ -87,7 +87,7 @@ declare class control {
     setAutomaticRoute(
         destX: number,
         destY: number,
-        stepPostfix: Array<{ direction: direction; x: number; y: number }>
+        stepPostfix: Array<{ direction: Dir; x: number; y: number }>
     ): void;
 
     /**
@@ -95,7 +95,7 @@ declare class control {
      * @example core.setAutoHeroMove([{direction: "up", step: 1}, {direction: "left", step: 3}, {direction: "right", step: 3}, {direction: "up", step: 9}]); // 上左左左右右右上9
      * @param steps 压缩的步伐数组，每项表示朝某方向走多少步
      */
-    setAutoHeroMove(steps: Array<{ direction: direction; step: number }>): void;
+    setAutoHeroMove(steps: Array<{ direction: Dir; step: number }>): void;
 
     /**
      * 尝试前进一步，如果面前不可被踏入就会直接触发该点事件
@@ -110,7 +110,7 @@ declare class control {
      * @param direction 可选，如果设置了就会先转身到该方向
      * @param callback 可选，如果设置了就只走一步
      */
-    moveHero(direction?: direction, callback?: () => void): void;
+    moveHero(direction?: Dir, callback?: () => void): void;
 
     /**
      * 等待主角停下
@@ -124,7 +124,7 @@ declare class control {
      * @example core.turnHero(); // 主角顺时针旋转90°，即单击主角或按下Z键的效果
      * @param direction 主角的新朝向，可为 up, down, left, right, :left, :right, :back 七种之一
      */
-    turnHero(direction?: direction): void;
+    turnHero(direction?: Dir): void;
 
     /**
      * 尝试瞬移，如果该点有图块/事件/阻激夹域捕则会瞬移到它旁边再走一步（不可踏入的话当然还是触发该点事件），这一步的方向优先和瞬移前主角的朝向一致
@@ -256,7 +256,7 @@ declare class control {
      * @param noGather 是否聚集跟随者
      */
     setHeroLoc(name: 'x' | 'y', value: number, noGather?: boolean): void;
-    setHeroLoc(name: 'direction', value: direction, noGather?: boolean): void;
+    setHeroLoc(name: 'direction', value: Dir, noGather?: boolean): void;
 
     /**
      * 读取主角的位置和/或朝向
@@ -264,9 +264,9 @@ declare class control {
      * @param name 要读取横坐标还是纵坐标还是朝向还是都读取
      * @returns name ? core.status.hero.loc[name] : core.status.hero.loc
      */
-    getHeroLoc(): { x: number; y: number; direction: direction };
+    getHeroLoc(): { x: number; y: number; direction: Dir };
     getHeroLoc(name: 'x' | 'y'): number;
-    getHeroLoc(name: 'direction'): direction;
+    getHeroLoc(name: 'direction'): Dir;
 
     /**
      * 根据级别的数字获取对应的名称，后者定义在全塔属性
@@ -629,3 +629,5 @@ declare class control {
     /** 屏幕分辨率改变后重新自适应 */
     resize(): void;
 }
+
+declare const control: new () => Control;
