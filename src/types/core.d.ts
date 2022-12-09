@@ -14,6 +14,7 @@
 /// <reference path="./eventDec.d.ts" />
 /// <reference path="./eventStatus.d.ts" />
 /// <reference path="./source.d.ts" />
+/// <reference path="./function.d.ts" />
 /// <reference path="../source/cls.d.ts" />
 /// <reference path="../source/data.d.ts" />
 /// <reference path="../source/events.d.ts" />
@@ -814,6 +815,45 @@ type Materails = [
     'icons'
 ];
 
+type CoreFlagProperties =
+    | 'autoScale'
+    | 'betweenAttackMax'
+    | 'blurFg'
+    | 'canGoDeadZone'
+    | 'disableShopOnDamage'
+    | 'displayCritical'
+    | 'displayEnemyDamage'
+    | 'displayExtraDamage'
+    | 'enableAddPoint'
+    | 'enableEnemyPoint'
+    | 'enableGentleClick'
+    | 'enableHDCanvas'
+    | 'enableMoveDirectly'
+    | 'enableNegativeDamage'
+    | 'enableRouteFolding'
+    | 'equipboxButton'
+    | 'extendToolbar'
+    | 'flyNearStair'
+    | 'flyRecordPosition'
+    | 'ignoreChangeFloor'
+    | 'itemFirstText'
+    | 'leftHandPrefer'
+    | 'startUsingCanvas';
+
+type CoreFlags = {
+    [P in CoreFlagProperties]: boolean;
+} & {
+    /**
+     * 地图伤害的显示模式
+     */
+    extraDamageType: number;
+
+    /**
+     * 当前的状态栏显示项
+     */
+    statusBarItems: string[];
+};
+
 type CoreDataFromMain =
     | 'dom'
     | 'statusBar'
@@ -944,6 +984,11 @@ interface Core extends Pick<Main, CoreDataFromMain> {
      * 游戏状态
      */
     readonly status: GameStatus;
+
+    /**
+     * 设置信息
+     */
+    readonly flags: CoreFlags;
 
     /**
      * 获得所有楼层的信息

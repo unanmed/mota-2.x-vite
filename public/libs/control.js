@@ -2517,7 +2517,7 @@ control.prototype.getHeroLoc = function (name) {
 control.prototype.getLvName = function (lv) {
     if (!core.status.hero) return null;
     if (lv == null) lv = core.status.hero.lv;
-    return ((core.firstData.levelUp || [])[lv - 1] || {}).title || lv;
+    return ((core.firstData.levelUp || [])[lv - 1] || {}).title || lv.toString();
 }
 
 ////// 获得下个等级所需经验；如果不存在下个等级，返回null。 //////
@@ -3290,7 +3290,7 @@ control.prototype.resize = function () {
         core.domStyle.scale = Math.min((clientWidth - 2 * BORDER) / core._PX_);
         core.domStyle.availableScale = [];
         extendToolbar = false;
-        BAR_WIDTH = Math.round(core._PX_ * 0.3);
+        BAR_WIDTH = Math.round(core._PX_ * 0.31);
     }
 
     var statusDisplayArr = this._shouldDisplayStatus(), count = statusDisplayArr.length;

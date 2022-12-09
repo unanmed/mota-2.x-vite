@@ -420,22 +420,56 @@ type Dir = 'up' | 'down' | 'left' | 'right';
 type Dir2 = Dir | 'leftup' | 'rightup' | 'leftdown' | 'rightdown';
 
 /**
+ * 转向的方向
+ */
+type TurnDir = Dir | ':left' | ':right' | ':back';
+
+/**
  * 移动的方向
  */
 type Move = 'forward' | Dir;
 
 /**
+ * 缓动模式，不过在高级动画插件面前不堪一击（
+ */
+type EaseMode = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut';
+
+/**
  * 位置
  */
-type Loc = {
+interface Loc {
+    /**
+     * 横坐标
+     */
     x: number;
+
+    /**
+     * 纵坐标
+     */
     y: number;
-};
+}
 
 /**
  * 带方向的位置
  */
-type DiredLoc = Loc & { direction: Dir };
+interface DiredLoc extends Loc {
+    /**
+     * 方向
+     */
+    direction: Dir;
+}
+
+interface CompressedStep {
+    /**
+     * 移动方向
+     */
+    direction: Dir;
+
+    /**
+     * 向该方向移动的步数
+     */
+    step: number;
+}
 
 interface TextContentConfig {
     left?: number;
