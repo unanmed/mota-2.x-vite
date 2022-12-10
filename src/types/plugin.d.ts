@@ -9,7 +9,9 @@ interface PluginDeclaration {
      */
     addPop(px: number, py: number, value: string): void;
 
-    /** 添加变量  例：所有的正在弹出的文字，像这个就可以使用core.plugin.pop获取 */
+    /**
+     * 添加变量  例：所有的正在弹出的文字，像这个就可以使用core.plugin.pop获取
+     */
     pop: any[];
 }
 

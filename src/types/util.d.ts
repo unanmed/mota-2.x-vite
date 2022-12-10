@@ -425,6 +425,11 @@ type Dir2 = Dir | 'leftup' | 'rightup' | 'leftdown' | 'rightdown';
 type TurnDir = Dir | ':left' | ':right' | ':back';
 
 /**
+ * 对话框的位置
+ */
+type TextPosition = 'up' | 'center' | 'down';
+
+/**
  * 移动的方向
  */
 type Move = 'forward' | Dir;
@@ -433,6 +438,31 @@ type Move = 'forward' | Dir;
  * 缓动模式，不过在高级动画插件面前不堪一击（
  */
 type EaseMode = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut';
+
+/**
+ * 事件执行的操作符\
+ * = 赋值\
+ * += 增加并赋值\
+ * -= 减少并赋值\
+ * *= 相乘并赋值\
+ * /= 相除并赋值\
+ * //= 去除数字的小数，注意不是取整数部分，取整数部分是向下取整，而这个是仅去除\
+ * **= 取幂\
+ * %= 取余\
+ * min= 取二者的最小值\
+ * max= 取二者的最大值\
+ */
+type MotaOperator =
+    | '+='
+    | '-='
+    | '*='
+    | '/='
+    | '//='
+    | '**='
+    | '%='
+    | 'min='
+    | 'max='
+    | '=';
 
 /**
  * 位置
@@ -586,25 +616,6 @@ type ResolvedMap<T extends FloorIds = FloorIds> = {
     title: string;
     weather: [string, number];
     blocks: Array<Block>;
-};
-
-type Enemy = {
-    id: string;
-    name: string;
-    displayIdInBook: string;
-    special: number | number[];
-    hp: number;
-    atk: number;
-    def: number;
-    money: number;
-    exp: number;
-    point: number;
-    [key: string]: any;
-};
-
-type Item = {
-    cls: string;
-    [key: string]: any;
 };
 
 type Save = DeepReadonly<{

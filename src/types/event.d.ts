@@ -107,7 +107,7 @@ interface Events {
      * @param addToLast 插入的位置，true表示插入到末尾，否则插入到开头
      */
     insertAction(
-        action: Events,
+        action: MotaEvent,
         x?: number,
         y?: number,
         callback?: () => void,

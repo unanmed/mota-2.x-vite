@@ -138,9 +138,9 @@ var data_comment_c456ea59_6018_45ef_8bcc_211a24c627dc = {
 				"equipName": {
 					"_leaf": true,
 					"_type": "textarea",
-					"_range": "(thiseval instanceof Array && thiseval.length<=8)||thiseval==null",
+					"_range": "(thiseval instanceof Array)||thiseval==null",
 					"_docs": "装备孔",
-					"_data": "装备位名称，为不超过8个的数组，此项的顺序与equiptype数值关联；例如可写[\"武器\",\"防具\",\"首饰\"]等等。"
+					"_data": "装备位名称，为一个数组，此项的顺序与equiptype数值关联；例如可写[\"武器\",\"防具\",\"首饰\"]等等。"
 				},
 				"startBgm": {
 					"_leaf": true,
@@ -344,7 +344,6 @@ var data_comment_c456ea59_6018_45ef_8bcc_211a24c627dc = {
 						"flags": {
 							"_leaf": true,
 							"_type": "textarea",
-							"_hide": true,
 							"_range": "thiseval instanceof Object && !(thiseval instanceof Array)",
 							"_data": "游戏变量"
 						},
@@ -490,10 +489,10 @@ var data_comment_c456ea59_6018_45ef_8bcc_211a24c627dc = {
 					"_leaf": true,
 					"_type": "select",
 					"_select": {
-						"values": [1, 2, 3, 4]
+						"values": [1, 2, 3, 4, 5]
 					},
 					"_docs": "竖状态栏自绘行数",
-					"_data": "竖屏模式下，顶端状态栏canvas化后的行数。\n此项将决定竖屏的状态栏高度，如果设置则不小于1且不大于4。\n仅在statusCanvas开启时才有效"
+					"_data": "竖屏模式下，顶端状态栏canvas化后的行数。\n此项将决定竖屏的状态栏高度，如果设置则不小于1且不大于5。\n仅在statusCanvas开启时才有效"
 				},
 				"floorChangeTime": {
 					"_leaf": true,
@@ -553,11 +552,17 @@ var data_comment_c456ea59_6018_45ef_8bcc_211a24c627dc = {
 					},
 					"_data": "状态栏显示项"
 				},
+				"autoScale": {
+					"_leaf": true,
+					"_type": "checkbox",
+					"_docs": "自动缩放最大化",
+					"_data": "是否自动缩放最大化，关闭后不再最大化"
+				},
 				"extendToolbar": {
 					"_leaf": true,
 					"_type": "checkbox",
-					"_docs": "横屏底部工具栏",
-					"_data": "在横屏状态下是否将工具栏挪动到游戏画布下方，从而完全解放状态栏空间"
+					"_docs": "横屏隐藏状态栏",
+					"_data": "在横屏状态下是否隐藏左侧状态栏，从而获得仿RM的沉浸式体验"
 				},
 				"flyNearStair": {
 					"_leaf": true,

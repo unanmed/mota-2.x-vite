@@ -255,7 +255,7 @@ interface TextAttribute {
     /**
      * 文本框的位置
      */
-    position: 'up' | 'center' | 'down';
+    position: TextPosition;
 
     /**
      * 文本的左右对齐方式

@@ -2,9 +2,146 @@ type MotaAction<T extends EventType = EventType> = MotaEventMap[T];
 
 type MotaEvent = MotaAction[];
 
-interface MotaEventMap {}
+interface MotaEventMap {
+    // ---------- 显示文字
+    text: TextEvent | string;
+    moveTextBox: MoveTextBoxEvent;
+    clearTextBox: ClearTextBoxEvent;
+    comment: CommentEvent;
+    autoText: AutoTextEvent;
+    scrollText: ScrollTextEvent;
+    setText: SetTextEvent;
+    tip: TipEvent;
+    confirm: ConfirmEvent;
+    choices: ChoicesEvent;
+    win: WinEvent;
+    lose: LoseEvent;
+    restart: EventBase<'restart'>;
+    // ---------- 数据相关
+}
 
 type EventType = keyof MotaEventMap;
+
+// =======================| 普通事件 |======================= //
+
+interface EventBase<T extends EventType> {
+    /**
+     * 事件的类型
+     */
+    type: T;
+}
+
+/**
+ * 显示文字
+ */
+interface TextEvent extends EventBase<'text'> {
+    text: string;
+    pos?: [number, number, number?];
+    code?: number;
+    async?: boolean;
+}
+
+/**
+ * 移动对话框
+ */
+interface MoveTextBoxEvent extends EventBase<'moveTextBox'> {
+    code: number;
+    loc: [number, number];
+    time: number;
+    relative?: boolean;
+    moveMode?: Exclude<EaseMode, 'linear'> | 'random';
+    async?: boolean;
+}
+
+/**
+ * 清除对话框
+ */
+interface ClearTextBoxEvent extends EventBase<'clearTextBox'> {
+    code: number[];
+}
+
+/**
+ * 注释
+ */
+interface CommentEvent extends EventBase<'comment'> {
+    text: string;
+}
+
+/**
+ * 自动剧情文本
+ */
+interface AutoTextEvent extends EventBase<'autoText'> {
+    text: string;
+    time: number;
+}
+
+/**
+ * 滚动剧情文本
+ */
+interface ScrollTextEvent extends EventBase<'scrollText'> {
+    text: string;
+    lineHeight: number;
+    async?: boolean;
+}
+
+/**
+ * 设置文本属性
+ */
+interface SetTextEvent extends EventBase<'setText'>, Partial<TextAttribute> {}
+
+/**
+ * 显示提示
+ */
+interface TipEvent extends EventBase<'tip'> {
+    text: string;
+    icon?: AllIds;
+}
+
+/**
+ * 确认框
+ */
+interface ConfirmEvent extends EventBase<'confirm'> {
+    yes: MotaEvent;
+    no: MotaEvent;
+    text: string;
+    default?: boolean;
+}
+
+/**
+ * 选择事件的一个选项
+ */
+interface OneEventChoice {
+    text: string;
+    action: MotaEvent;
+}
+
+/**
+ * 选择事件
+ */
+interface ChoicesEvent extends EventBase<'choices'> {
+    text: string;
+    choices: OneEventChoice[];
+    timeout?: number;
+    width?: number;
+}
+
+/**
+ * 游戏胜利
+ */
+interface WinEvent extends EventBase<'win'> {
+    reason: string;
+    norank?: number;
+    noexit?: number;
+}
+
+/**
+ * 游戏失败
+ */
+interface LoseEvent extends EventBase<'lose'> {
+    reason: string;
+}
+
+// =======================| 其他类型的事件 |======================= //
 
 /**
  * 某种类型的商店
@@ -234,6 +371,23 @@ interface LevelChooseEvent {
 
     /**
      * 选择该难度时执行的事件
+     */
+    action: MotaEvent;
+}
+
+interface LevelUpEvent {
+    /**
+     * 升级所需经验
+     */
+    need: number;
+
+    /**
+     * 这个等级的等级名
+     */
+    title: string;
+
+    /**
+     * 升级时执行的事件
      */
     action: MotaEvent;
 }

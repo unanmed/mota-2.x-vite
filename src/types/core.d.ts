@@ -124,12 +124,16 @@ interface Material {
      * 怪物信息
      * @example core.material.enemys.greenSlime // 获得绿色史莱姆的属性数据
      */
-    readonly enemys: Record<AllIdsOf<'enemys' | 'enemy48'>, Enemy>;
+    readonly enemys: {
+        [P in EnemyIds]: Enemy<P>;
+    };
 
     /**
      * 道具信息
      */
-    readonly items: Record<AllIdsOf<'items'>, Item>;
+    readonly items: {
+        [P in AllIdsOf<'items'>]: Item<P>;
+    };
 
     /**
      * 图标信息
@@ -1004,6 +1008,11 @@ interface Core extends Pick<Main, CoreDataFromMain> {
     readonly control: Control;
 
     /**
+     * 游戏的全塔属性信息
+     */
+    readonly data: Omit<DataCore, 'main'>;
+
+    /**
      * 游戏加载模块
      */
     readonly loader: Loader;
@@ -1052,6 +1061,25 @@ interface Core extends Pick<Main, CoreDataFromMain> {
      * 游戏的插件模块
      */
     readonly plugin: PluginDeclaration;
+
+    /**
+     * 进行游戏初始化
+     * @param coreData 初始化信息
+     * @param callback 初始化完成后的回调函数
+     */
+    init(coreData: MainData, callback?: () => void): void;
+
+    /**
+     * 在一个上下文下执行函数（真的有人会用这个东西吗？
+     * @param func 要执行的函数
+     * @param _this 执行函数的上下文
+     * @param params 函数的参数
+     */
+    doFunc<F extends Function>(
+        func: F,
+        _this: any,
+        ...params: Parameters<F>
+    ): ReturnType<F>;
 }
 
 type CoreMixin = Core &
@@ -1109,68 +1137,6 @@ interface SplitImageData {
      * 切分成的小图的前缀名
      */
     readonly prefix: string;
-}
-
-interface MainData {
-    /**
-     * 所有的楼层id
-     */
-    readonly floorIds: FloorIds[];
-
-    /**
-     * 分区指定
-     */
-    readonly floorPatitions: [FloorIds, FloorIds?][];
-
-    /**
-     * 所有的额外素材
-     */
-    readonly tilesets: string[];
-
-    /**
-     * 所有的动画
-     */
-    readonly animates: AnimationIds[];
-
-    /**
-     * 所有的bgm
-     */
-    readonly bgms: BgmIds[];
-
-    /**
-     * 所有的音效
-     */
-    readonly sounds: SoundIds[];
-
-    /**
-     * 所有的字体
-     */
-    readonly fonts: FontIds[];
-
-    /**
-     * 文件别名
-     */
-    readonly nameMap: NameMap;
-
-    /**
-     * 难度选择
-     */
-    readonly levelChoose: LevelChooseEvent[];
-
-    /**
-     * 装备孔的名称
-     */
-    readonly equipName: string[];
-
-    /**
-     * 初始界面的bgm
-     */
-    readonly startBgm: BgmIds;
-
-    /**
-     * 主样式
-     */
-    readonly styles: MainStyle;
 }
 
 interface Main extends MainData {
@@ -1540,7 +1506,7 @@ interface Flags {
     /**
      * 难度的颜色，css字符串
      */
-    readonly __hardColor__: string;
+    readonly __hardColor__: Color;
 
     /**
      * 平面楼传下，每个楼层的离开位置
@@ -1560,9 +1526,36 @@ interface Flags {
     [key: string]: any;
 }
 
+interface MapDataOf<T extends keyof NumberToId> {
+    /**
+     * 图块的id
+     */
+    id: NumberToId[T];
+
+    /**
+     * 图块的类型
+     */
+    cls: ClsOf<NumberToId[T]>;
+}
+
+/**
+ * 样板的主对象
+ */
 declare const main: Main;
+
+/**
+ * 样板的核心对象
+ */
 declare const core: CoreMixin;
+
+/**
+ * 所有的变量
+ */
 declare let flags: Flags;
+
+/**
+ * 勇士信息
+ */
 declare let hero: HeroStatus;
 
 // 让你总是拼错！（不过现在有ts了应该拼不错了
@@ -1570,3 +1563,52 @@ declare const ture: true;
 declare const flase: false;
 declare const on: true;
 declare const off: false;
+
+/**
+ * 全塔属性
+ */
+declare const data_a1e2fb4a_e986_4524_b0da_9b7ba7c0874d: DataCore;
+
+/**
+ * 所有的怪物信息
+ */
+declare const enemys_fcae963b_31c9_42b4_b48c_bb48d09f3f80: {
+    [P in EnemyIds]: Enemy<P>;
+};
+
+/**
+ * 所有的公共事件
+ */
+declare const events_c12a15a8_c380_4b28_8144_256cba95f760: Record<
+    EventDeclaration,
+    MotaEvent
+>;
+
+/**
+ * 脚本编辑
+ */
+declare const functions_d6ad677b_427a_4623_b50f_a445a3b0ef8a: FunctionsData;
+
+/**
+ * 所有的图标信息
+ */
+declare const icons_4665ee12_3a1f_44a4_bea3_0fccba634dc1: MaterialIcon;
+
+/**
+ * 所有的道具信息
+ */
+declare const items_296f5d02_12fd_4166_a7c1_b5e830c9ee3a: {
+    [P in AllIdsOf<'items'>]: Item<P>;
+};
+
+/**
+ * 所有的图块信息
+ */
+declare const maps_90f36752_8815_4be8_b32b_d7fad1d0542e: {
+    [P in keyof NumberToId]: MapDataOf<P>;
+};
+
+/**
+ * 插件信息
+ */
+declare const plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1: PluginDeclaration;

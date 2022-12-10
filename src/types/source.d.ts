@@ -47,6 +47,11 @@ type ItemIdOf<T extends ItemCls> = keyof {
 };
 
 /**
+ * 某个道具的类型
+ */
+type ItemClsOf<T extends AllIdsOf<'items'>> = ItemDeclaration[T];
+
+/**
  * 获取某个图块的类型
  */
 type ClsOf<T extends AllIds> = IdToCls[T];
@@ -62,3 +67,8 @@ type AllNumbersOf<T extends Cls> = IdToNumber[AllIdsOf<T>];
 type NameMapIn<T extends string> = {
     [P in keyof NameMap as NameMap[P] extends T ? P : never]: NameMap[P];
 };
+
+/**
+ * 所有的怪物id
+ */
+type EnemyIds = AllIdsOf<'enemys' | 'enemy48'>;

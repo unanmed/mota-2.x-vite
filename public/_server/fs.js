@@ -114,6 +114,7 @@
             data += 'type=base64&';
             data += 'name=' + filename;
             data += '&value=' + datastr;
+            console.log(data);
             postsomething(data, '/writeFile', callback);
             return;
         }
