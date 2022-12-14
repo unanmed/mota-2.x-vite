@@ -974,7 +974,7 @@ interface Control {
      * @param bgm 背景音乐的文件名，支持全塔属性中映射前的中文名
      * @param startTime 跳过前多少秒
      */
-    playBgm(bgm: BgmIds | keyof NameMapIn<BgmIds>, startTime?: number): void;
+    playBgm(bgm: BgmIds | NameMapIn<BgmIds>, startTime?: number): void;
 
     /**
      * 设置背景音乐的播放速度和音调
@@ -1011,7 +1011,7 @@ interface Control {
      * @returns 音效的唯一标识符，用于停止音效等操作
      */
     playSound(
-        sound: SoundIds | keyof NameMapIn<SoundIds>,
+        sound: SoundIds | NameMapIn<SoundIds>,
         pitch?: number,
         callback?: () => void
     ): number;
@@ -1026,7 +1026,7 @@ interface Control {
      * 获得正在播放的所有音效的id列表
      * @param name 要获得的音效名
      */
-    getPlayingSounds(name?: SoundIds | keyof NameMapIn<SoundIds>): number[];
+    getPlayingSounds(name?: SoundIds | NameMapIn<SoundIds>): number[];
 
     /**
      * 检查bgm状态，没有播放的话就播放

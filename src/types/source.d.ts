@@ -64,7 +64,7 @@ type AllNumbersOf<T extends Cls> = IdToNumber[AllIdsOf<T>];
 /**
  * 选取在一段字符串中的映射名称
  */
-type NameMapIn<T extends string> = {
+type NameMapIn<T extends string> = keyof {
     [P in keyof NameMap as NameMap[P] extends T ? P : never]: NameMap[P];
 };
 

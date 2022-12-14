@@ -18,11 +18,30 @@ interface MotaEventMap {
     lose: LoseEvent;
     restart: EventBase<'restart'>;
     // ---------- 数据相关
+    setValue: SetValueEvent;
+    setEnemy: SetEnemyEvent;
+    setEnemyOnPoint: SetEnemyOnPointEvent;
+    resetEnemyOnPoint: ResetEnemyOnPointEvent;
+    moveEnemyOnPoint: MoveEnemyOnPointEvent;
+    setEquip: SetEquipEvent;
+    setFloor: SetFloorEvent;
 }
 
 type EventType = keyof MotaEventMap;
 
 // =======================| 普通事件 |======================= //
+
+/**
+ * 事件值的前缀
+ */
+type EventValuePreffix =
+    | 'status'
+    | 'flag'
+    | 'item'
+    | 'buff'
+    | 'switch'
+    | 'temp'
+    | 'global';
 
 interface EventBase<T extends EventType> {
     /**
@@ -32,13 +51,48 @@ interface EventBase<T extends EventType> {
 }
 
 /**
+ * 带坐标的事件
+ */
+interface LocedEvent {
+    loc?: LocArr[];
+    floorId?: FloorIds;
+}
+
+/**
+ * 可以不刷新状态栏的事件
+ */
+interface NoRefreshableEvent {
+    norefresh?: boolean;
+}
+
+/**
+ * 关于移动的事件
+ */
+interface MoveEventBase {
+    from?: LocArr;
+}
+
+/**
+ * 以绝对坐标为基础的移动事件
+ */
+interface LocBasedMoveEvent extends MoveEventBase {
+    to?: LocArr;
+}
+
+/**
+ * 以相对坐标为基础的移动事件
+ */
+interface DeltaBasedMoveEvent extends MoveEventBase {
+    dxy?: LocArr;
+}
+
+/**
  * 显示文字
  */
-interface TextEvent extends EventBase<'text'> {
+interface TextEvent extends EventBase<'text'>, NoRefreshableEvent {
     text: string;
     pos?: [number, number, number?];
     code?: number;
-    async?: boolean;
 }
 
 /**
@@ -51,6 +105,7 @@ interface MoveTextBoxEvent extends EventBase<'moveTextBox'> {
     relative?: boolean;
     moveMode?: Exclude<EaseMode, 'linear'> | 'random';
     async?: boolean;
+    norefresh?: boolean;
 }
 
 /**
@@ -139,6 +194,72 @@ interface WinEvent extends EventBase<'win'> {
  */
 interface LoseEvent extends EventBase<'lose'> {
     reason: string;
+}
+
+/**
+ * 设置数值
+ */
+interface SetValueEvent extends EventBase<'setText'> {
+    name: `${EventValuePreffix}:${string}`;
+    value: any;
+    norefresh?: boolean;
+    operator?: MotaOperator;
+}
+
+/**
+ * 设置怪物属性
+ */
+interface SetEnemyEvent extends EventBase<'setEnemy'> {
+    id: EnemyIds;
+    name: Exclude<keyof Enemy, 'id'>;
+    norefresh?: boolean;
+    operator?: MotaOperator;
+}
+
+/**
+ * 设置某点的怪物属性
+ */
+interface SetEnemyOnPointEvent extends SetEnemyEvent, LocedEvent {
+    type: 'setEnemyOnPoint';
+}
+
+/**
+ * 重置某点的怪物属性
+ */
+interface ResetEnemyOnPointEvent
+    extends EventBase<'resetEnemyOnPoint'>,
+        LocedEvent,
+        NoRefreshableEvent {}
+
+/**
+ * 移动某点怪物属性
+ */
+interface MoveEnemyOnPointEvent
+    extends EventBase<'moveEnemyOnPoint'>,
+        LocBasedMoveEvent,
+        DeltaBasedMoveEvent,
+        NoRefreshableEvent {}
+
+/**
+ * 设置装备属性
+ */
+interface SetEquipEvent extends EventBase<'setEquip'> {
+    id: ItemIdOf<'equips'>;
+    valueType: 'value' | 'percentage';
+    name: keyof SelectType<HeroStatus, number>;
+    value: number;
+    operator?: MotaOperator;
+}
+
+/**
+ * 设置楼层属性
+ */
+interface SetFloorEvent<
+    T extends Exclude<keyof NonObjectOf<ResolvedMap>, 'floorId'>
+> extends EventBase<'setFloor'> {
+    name: T;
+    value: ResolvedMap[T];
+    floorId?: FloorIds;
 }
 
 // =======================| 其他类型的事件 |======================= //
