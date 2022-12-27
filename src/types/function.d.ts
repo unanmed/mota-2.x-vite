@@ -124,6 +124,136 @@ interface EnemyData {
     ): boolean;
 }
 
+interface UiData {
+    /**
+     * 获取道具栏要显示的道具
+     * @param cls 要获取的类型
+     */
+    getToolboxItems<T extends Exclude<ItemCls, 'items'>>(cls: T): ItemIdOf<T>[];
+
+    /**
+     * 绘制状态栏
+     */
+    drawStatusBar(): void;
+
+    /**
+     * 数据统计界面统计的道具数量
+     */
+    drawStatistics(): AllIdsOf<'items'>[];
+
+    /**
+     * 绘制关于界面
+     */
+    drawAbout(): void;
+}
+
+interface EventData {
+    /**
+     * 重置游戏
+     * @param hero 勇士信息
+     * @param hard 难度信息
+     * @param floorId 勇士所在楼层
+     * @param maps 所有的地图信息
+     * @param values 全局数值信息
+     */
+    resetGame(
+        hero: HeroStatus,
+        hard: string,
+        floorId: FloorIds,
+        maps: GameStatus['maps'],
+        values: Partial<CoreValues>
+    ): void;
+
+    /**
+     * 游戏获胜
+     * @param reason 胜利原因
+     * @param norank 是否不计榜
+     * @param noexit 是否不退出
+     */
+    win(reason: string, norank?: boolean, noexit?: boolean): void;
+
+    /**
+     * 游戏失败
+     * @param reason 失败原因
+     */
+    lose(reason: string): void;
+
+    /**
+     * 切换楼层中，即屏幕完全变黑的那一刻
+     * @param floorId 目标楼层
+     * @param heroLoc 勇士到达的位置
+     */
+    changingFloor(floorId: FloorIds, heroLoc: Loc): void;
+
+    /**
+     * 切换楼层后
+     * @param floorId 目标楼层
+     */
+    afterChangeFloor(floorId: FloorIds): void;
+
+    /**
+     * 飞往某个楼层
+     * @param toId 目标楼层
+     * @param callback 飞到后的回调函数
+     */
+    flyTo(toId: FloorIds, callback: () => void): void;
+
+    /**
+     * 与怪物战斗前
+     * @param enemyId 打败的怪物
+     * @param x 怪物横坐标
+     * @param y 怪物纵坐标
+     */
+    beforeBattle(
+        enemyId: AllIdsOf<'enemys' | 'enemy48'>,
+        x?: number,
+        y?: number
+    ): void;
+
+    /**
+     * 与怪物战斗后
+     * @param enemyId 打败的怪物
+     * @param x 怪物横坐标
+     * @param y 怪物纵坐标
+     */
+    afterBattle(
+        enemyId: AllIdsOf<'enemys' | 'enemy48'>,
+        x?: number,
+        y?: number
+    ): void;
+
+    /**
+     * 开门后
+     * @param doorId 门的id
+     * @param x 门的横坐标
+     * @param y 门的纵坐标
+     */
+    afterOpenDoor(
+        doorId: AllIdsOf<Exclude<Cls, 'enemys' | 'enemy48'>>,
+        x: number,
+        y: number
+    ): void;
+
+    /**
+     * 获得道具后
+     * @param itemId 道具id
+     * @param x 道具横坐标
+     * @param y 道具纵坐标
+     * @param isGentleClick 是否是轻按
+     */
+    afterGetItem(
+        itemId: AllIdsOf<'items'>,
+        x: number,
+        y: number,
+        isGentleClick?: boolean
+    ): void;
+
+    /**
+     * 推箱子后
+     */
+    afterPushBox(): void;
+}
+
 interface FunctionsData {
     /**
      * 交互信息
@@ -139,4 +269,14 @@ interface FunctionsData {
      * 怪物信息
      */
     enemys: EnemyData;
+
+    /**
+     * ui信息
+     */
+    ui: UiData;
+
+    /**
+     * 事件信息
+     */
+    events: EventData;
 }

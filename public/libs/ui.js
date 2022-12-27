@@ -28,7 +28,7 @@ ui.prototype.getContextByName = function (name) {
         else if (core.dymCanvas[name])
             canvas = core.dymCanvas[name];
     }
-    if (canvas && canvas.canvas) {
+    if (canvas instanceof CanvasRenderingContext2D) {
         return canvas;
     }
     return null;
@@ -127,7 +127,7 @@ ui.prototype.setFontForMaxWidth = function (name, text, maxWidth, font) {
 }
 
 ////// 在某个canvas上绘制粗体 //////
-ui.prototype.fillBoldText = function (name, text, x, y, style, strokeStyle, font, maxWidth) {
+ui.prototype.fillBoldText = function (name, text, x, y, style, strokeStyle, font, maxWidth, lineWidth) {
     var ctx = this.getContextByName(name);
     if (!ctx) return;
     if (font) ctx.font = font;
@@ -139,7 +139,7 @@ ui.prototype.fillBoldText = function (name, text, x, y, style, strokeStyle, font
         this.setFontForMaxWidth(ctx, text, maxWidth);
     }
     ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = lineWidth || 2;
     ctx.strokeText(text, x, y);
     ctx.fillStyle = style;
     ctx.fillText(text, x, y);
@@ -3369,7 +3369,7 @@ ui.prototype._drawHelp = function () {
 ////// 动态canvas //////
 
 ////// canvas创建 //////
-ui.prototype.createCanvas = function (name, x, y, width, height, z) {
+ui.prototype.createCanvas = function (name, x, y, width, height, z, nonAntiAliasing) {
     // 如果画布已存在则直接调用
     if (core.dymCanvas[name]) {
         this.relocateCanvas(name, x, y);
@@ -3389,8 +3389,13 @@ ui.prototype.createCanvas = function (name, x, y, width, height, z) {
     newCanvas.style.zIndex = z;
     newCanvas.style.position = 'absolute';
     newCanvas.style.pointerEvents = 'none';
-    core.dymCanvas[name] = newCanvas.getContext('2d');
-    core.maps._setHDCanvasSize(core.dymCanvas[name], width, height);
+    const ctx = newCanvas.getContext('2d');
+    if (nonAntiAliasing) {
+        newCanvas.style.imageRendering = 'pixelated';
+        ctx.imageSmoothingEnabled = false;
+    }
+    core.dymCanvas[name] = ctx;
+    core.maps._setHDCanvasSize(core.dymCanvas[name], width, height, false, true);
     core.dom.gameDraw.appendChild(newCanvas);
     return core.dymCanvas[name];
 }
@@ -3443,12 +3448,13 @@ ui.prototype.rotateCanvas = function (name, angle, centerX, centerY) {
 ui.prototype.resizeCanvas = function (name, width, height, styleOnly, isTempCanvas) {
     var ctx = core.getContextByName(name);
     if (!ctx) return null;
+    const noAntiAliasing = !ctx.imageSmoothingEnabled || ctx.canvas.style.imageRendering === 'pixelated';
     if (width != null) {
-        if (!styleOnly) core.maps._setHDCanvasSize(ctx, width, null, isTempCanvas);
+        if (!styleOnly) core.maps._setHDCanvasSize(ctx, width, null, isTempCanvas, noAntiAliasing);
         ctx.canvas.style.width = width * core.domStyle.scale + 'px';
     }
     if (height != null) {
-        if (!styleOnly) core.maps._setHDCanvasSize(ctx, null, height, isTempCanvas);
+        if (!styleOnly) core.maps._setHDCanvasSize(ctx, null, height, isTempCanvas, noAntiAliasing);
         ctx.canvas.style.height = height * core.domStyle.scale + 'px';
     }
     return ctx;

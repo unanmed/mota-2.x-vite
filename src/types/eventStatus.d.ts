@@ -269,7 +269,7 @@ interface ActionLocStackInfo {
     /**
      * 楼层id
      */
-    floorId: string;
+    floorId: FloorIds;
 }
 
 /**

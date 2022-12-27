@@ -1,5 +1,5 @@
 // 需要引入所有的插件
-import pop from './plugin/template';
+import pop from './plugin/pop';
 
 window.addEventListener('load', () => {
     // 每个引入的插件都要在这里执行，否则不会被转发

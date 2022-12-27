@@ -295,7 +295,7 @@ interface Utils {
     /**
      * 判断一个值是否不为null，undefined和NaN
      * @example core.isset(0/0); // false，因为0/0等于NaN
-     * @param v 待测值，可选
+     * @param v 待测值
      * @returns false表示待测值为null、undefined、NaN或未填写，true表示为其他值
      */
     isset(v?: any): boolean;
@@ -453,7 +453,7 @@ interface Utils {
      * @example core.myconfirm('重启游戏？', core.restart); // 弹窗询问玩家是否重启游戏
      * @param hint 弹窗的内容
      * @param yesCallback 确定后的回调函数
-     * @param noCallback 取消后的回调函数，可选
+     * @param noCallback 取消后的回调函数
      */
     myconfirm(
         hint: string,
@@ -562,7 +562,7 @@ type RGBArray = [number, number, number, number?];
 /**
  * 样板的颜色字符串
  */
-type Color = `#${string}` | _RGBA | [number, number, number, number?];
+type Color = `#${string}` | _RGBA | RGBArray;
 
 /**
  * 四个方向
@@ -680,128 +680,95 @@ type Scan2 = {
     [D in Dir2]: Loc;
 };
 
-interface TextContentConfig {
-    left?: number;
-    top?: number;
-    maxWidth?: number;
-    color?: RGBArray | string;
-    align?: 'left' | 'center' | 'right';
-    fontSize: number;
-    lineHeight?: number;
-    time?: number;
-    font?: string;
-    letterSpacing?: number;
-    bold?: boolean;
-    italic?: boolean;
-}
+/**
+ * 图片翻转
+ */
+type ImageReverse = ':o' | ':x' | ':y';
 
-interface Block<N extends AllNumbers = AllNumbers> {
-    x: number;
-    y: number;
-    id: N;
-    event: {
-        cls: ClsOf<NumberToId[N]>;
-        id: NumberToId[N];
-        [key: string]: any;
-    };
-}
+/**
+ * 对话框的箭头方向
+ */
+type TextBoxDir = 'up' | 'down';
 
-type frameObj = {
-    angle: number;
-    index: number;
-    mirror: number;
-    opacity: number;
-    x: number;
-    y: number;
-    zoom: number;
-};
+/**
+ * 对话框的位置
+ */
+type TextBoxPos =
+    | `${TextBoxDir},hero`
+    | `${TextBoxDir},${number},${number}`
+    | TextPosition;
 
+/**
+ * 画布信息
+ */
 type CtxRefer = string | CanvasRenderingContext2D | HTMLCanvasElement;
 
-type Animate = {
+/**
+ * 触发器类型
+ */
+type MotaTrigger =
+    | 'battle'
+    | 'pusBox'
+    | 'openDoor'
+    | 'ski'
+    | 'custom'
+    | 'getItem';
+
+/**
+ * 切换楼层的目标坐标
+ */
+type FloorChangeStair =
+    | 'upFloor'
+    | 'downFloor'
+    | ':symmetry'
+    | ':symmetry_x'
+    | ':symmetry_y'
+    | 'flyPoint';
+
+/**
+ * 事件值的前缀
+ */
+type EventValuePreffix =
+    | 'status'
+    | 'flag'
+    | 'item'
+    | 'buff'
+    | 'switch'
+    | 'temp'
+    | 'global';
+
+interface Animate {
+    /**
+     * 动画的帧数s
+     */
     frame: number;
-    frames: frameObj[][];
+
+    /**
+     * 每帧的信息
+     */
+    frames: FrameObj[][];
+
+    /**
+     * 图片信息
+     */
     images: HTMLImageElement[];
+
+    /**
+     * 缩放信息
+     */
     ratio: number;
+
+    /**
+     * 音效
+     */
     se: string;
-};
-
-type Floor = {
-    title: string;
-    ratio: number;
-};
-
-type ResolvedMap<T extends FloorIds = FloorIds> = {
-    floorId: T;
-    afterBattle: { [x: string]: Events };
-    afterOpenDoor: { [x: string]: Events };
-    afterGetItem: { [x: string]: Events };
-    autoEvent: Event;
-    beforeBattle: { [x: string]: Events };
-    canFlyFrom: boolean;
-    canFltTo: boolean;
-    canUseQuickShop: boolean;
-    cannotMove: Object;
-    cannotMoveIn: Object;
-    cannotViewMap: boolean;
-    changeFloor: {
-        [x: string]: {
-            floorId: ':before' | ':after' | ':now' | string;
-            loc?: [number, number];
-            stair?:
-                | 'upFloor'
-                | 'downFloor'
-                | ':symmetry'
-                | ':symmetry_x'
-                | ':symmetry_y'
-                | 'flyPoint';
-            direction?:
-                | 'left'
-                | 'right'
-                | 'up'
-                | 'down'
-                | ':left'
-                | ':right'
-                | ':back'
-                | ':hero'
-                | ':backhero';
-            time?: number;
-            ignoreChangeFloor?: boolean;
-        };
-    };
-    defaultGround: string;
-    bgm: string | Array<string>;
-    bgmap: number[][];
-    /** 事件层 */
-    map: number[][];
-    fgmap: number[][];
-    width: number;
-    height: number;
-    images: Array<{
-        canvas: 'bg' | 'auto' | 'fg';
-        name: string;
-        x: number;
-        y: number;
-        reverse?: ':x' | ':y' | ':o';
-        disable?: boolean;
-        sx?: number;
-        sy?: number;
-        w?: number;
-        h?: number;
-        frame?: number;
-    }>;
-    name: string;
-    ratio: number;
-    title: string;
-    weather: [string, number];
-    blocks: Array<Block>;
-};
+}
 
 type Save = DeepReadonly<{
     /**
      * 存档所在的楼层id
      */
-    floorId: string;
+    floorId: FloorIds;
 
     /**
      * 存档的勇士信息
@@ -816,7 +783,7 @@ type Save = DeepReadonly<{
     /**
      * 存档的地图信息，已经过压缩处理
      */
-    maps: Record<string, ResolvedMap>;
+    maps: Record<string, ResolvedFloor>;
 
     /**
      * 录像信息
@@ -844,16 +811,6 @@ type Save = DeepReadonly<{
     time: number;
 }>;
 
-type SystemFlags = {
-    enableXxx: boolean;
-    flyNearStair: boolean;
-    steelDoorWithoutKey: boolean;
-    betweenAttackMax: boolean;
-    ignoreChangeFloor: boolean;
-    disableShopOnDamage: boolean;
-    blurFg: boolean;
-};
-
 /**
  * 深度只读一个对象，使其所有属性都只读
  */
@@ -864,7 +821,7 @@ type DeepReadonly<T> = {
 };
 
 /**
- * 深度可选一个对象，使其所有属性都可选
+ * 深度可选一个对象，使其所有属性都
  */
 type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends number | string | boolean
@@ -920,3 +877,8 @@ type NonObject = number | string | boolean;
  * 获取一个对象的非对象值
  */
 type NonObjectOf<T> = SelectType<T, NonObject>;
+
+/**
+ * 以一个字符串结尾
+ */
+type EndsWith<T extends string> = `${string}${T}`;

@@ -275,7 +275,7 @@ interface TextAttribute {
     /**
      * 背景颜色
      */
-    background: RGBArray;
+    background: RGBArray | ImageIds;
 
     /**
      * 文字颜色
@@ -607,7 +607,7 @@ interface InitGameStatus {
      * 所有楼层的地图信息
      */
     maps: {
-        [P in FloorIds]: ResolvedMap<P>;
+        [P in FloorIds]: Floor<P>;
     };
 
     /**
@@ -785,7 +785,7 @@ interface GameStatus extends InitGameStatus {
     played: boolean;
     gameOver: boolean;
     floorId: FloorIds;
-    thisMap: ResolvedMap;
+    thisMap: ResolvedFloor;
     checkBlock: Readonly<CheckBlockStatus>;
     lockControl: boolean;
     hero: HeroStatus;

@@ -346,9 +346,9 @@ interface Enemys extends EnemyData {
      * 获得某只敌人对主角的总伤害
      * @example core.getDamage('greenSlime',0,0,'MT0') // 绿头怪的总伤害
      * @param enemy 敌人id或敌人对象
-     * @param x 敌人的横坐标，可选
-     * @param y 敌人的纵坐标，可选
-     * @param floorId 敌人所在的地图，可选
+     * @param x 敌人的横坐标
+     * @param y 敌人的纵坐标
+     * @param floorId 敌人所在的地图
      * @returns 总伤害，如果因为没有破防或无敌怪等其他原因无法战斗，则返回null
      */
     getDamage(
@@ -361,7 +361,7 @@ interface Enemys extends EnemyData {
     /**
      * 获得某张地图的敌人集合，用于手册绘制
      * @example core.getCurrentEnemys('MT0') // 主塔0层的敌人集合
-     * @param floorId 地图id，可选
+     * @param floorId 地图id
      * @returns 敌人集合，按伤害升序排列，支持多朝向怪合并
      */
     getCurrentEnemys(floorId?: FloorIds): Enemy[];

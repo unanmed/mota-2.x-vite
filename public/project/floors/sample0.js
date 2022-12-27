@@ -233,7 +233,9 @@ main.floors.sample0=
             "这是一扇高度为 48 个像素而非 32 个像素的门。\n高门和高NPC的素材存放在 materials 文件夹中 npc48.png 的部分。"
         ]
     },
-    "cannotMove": {},
+    "cannotMove": {
+        "7,8": []
+    },
     "bgmap": [
 
 ],
@@ -256,5 +258,7 @@ main.floors.sample0=
     "height": 13,
     "autoEvent": {},
     "beforeBattle": {},
-    "cannotMoveIn": {}
+    "cannotMoveIn": {
+        "7,8": []
+    }
 }

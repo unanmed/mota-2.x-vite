@@ -94,7 +94,7 @@ var functions_d6ad677b_427a_4623_b50f_a445a3b0ef8a =
 			})
 		},
         "changingFloor": function (floorId, heroLoc) {
-			// 正在切换楼层过程中执行的操作；此函数的执行时间是“屏幕完全变黑“的那一刻
+			// 正在切换楼层过程中执行的操作；此函数的执行时间是“屏幕完全变黑”的那一刻
 			// floorId为要切换到的楼层ID；heroLoc表示勇士切换到的位置
 
 			// ---------- 此时还没有进行切换，当前floorId还是原来的 ---------- //
@@ -1591,75 +1591,75 @@ var functions_d6ad677b_427a_4623_b50f_a445a3b0ef8a =
 				.sort( /*function (id1, id2) { return core.material.items[id1].name <= core.material.items[id2].name ? -1 : 1 }*/);
 		},
         "drawStatusBar": function () {
-	var ctx, fill = function (text, x, y, style) {
-		core.ui.setFont(ctx, (/\w+/.test(text) ? 'italic ' : '') + 'bold 18px Verdana');
-		core.ui.fillBoldText(ctx, text, x, y, style);
-	};
-	if (core.flags.statusCanvas) { // 系统开关「自绘状态栏」开启
-		core.ui.clearMap(ctx = core.dom.statusCanvasCtx); // 清空状态栏
-		core.ui.setFillStyle(ctx, core.status.globalAttribute.statusBarColor);
-		if (core.domStyle.isVertical) { // 竖屏
-			core.drawImage(ctx, core.statusBar.icons.floor, 6, 6, 25, 25);
-			fill((core.status.thisMap || {}).name || "Loading", 42, 26);
-			core.drawImage(ctx, core.statusBar.icons.hp, 137, 6, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('hp')), 173, 26);
-			core.drawImage(ctx, core.statusBar.icons.atk, 268, 6, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('atk')), 304, 26);
-			core.drawImage(ctx, core.statusBar.icons.def, 6, 38, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('def')), 42, 58);
-			core.drawImage(ctx, core.statusBar.icons.mdef, 137, 38, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('mdef')), 173, 58);
-			core.drawImage(ctx, core.statusBar.icons.money, 268, 38, 25, 25);
-			fill(core.formatBigNumber(core.status.hero.money), 304, 58);
-			core.drawImage(ctx, core.statusBar.icons.exp, 6, 70, 25, 25);
-			fill(core.formatBigNumber(core.status.hero.exp), 42, 90);
-		} else if (!core.flags.extendToolbar) { // 横屏且未隐藏状态栏
-			core.drawImage(ctx, core.statusBar.icons.floor, 6, 9, 25, 25);
-			fill((core.status.thisMap || {}).name || "Loading", 42, 29);
-			core.drawImage(ctx, core.statusBar.icons.hp, 6, 43, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('hp')), 42, 63);
-			core.drawImage(ctx, core.statusBar.icons.atk, 6, 77, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('atk')), 42, 97);
-			core.drawImage(ctx, core.statusBar.icons.def, 6, 111, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('def')), 42, 131);
-			core.drawImage(ctx, core.statusBar.icons.mdef, 6, 145, 25, 25);
-			fill(core.formatBigNumber(core.getRealStatus('mdef')), 42, 165);
-			core.drawImage(ctx, core.statusBar.icons.money, 6, 179, 25, 25);
-			fill(core.formatBigNumber(core.status.hero.money), 42, 199);
-			core.drawImage(ctx, core.statusBar.icons.exp, 6, 213, 25, 25);
-			fill(core.formatBigNumber(core.status.hero.exp), 42, 233);
-			fill(core.setTwoDigits(core.itemCount('yellowKey')), 11, 267, '#FFCCAA');
-			fill(core.setTwoDigits(core.itemCount('blueKey')), 46, 267, '#AAAADD');
-			fill(core.setTwoDigits(core.itemCount('redKey')), 81, 267, '#FF8888');
-		}
-	} else if (core.flags.extendToolbar && !core.domStyle.isVertical) { // 横屏且隐藏状态栏
-		if (!core.dymCanvas['status'])
-			core.ui.createCanvas('status', 0, 0, core._PX_, core._PY_, 66); // 刚好盖过显伤层
-		core.ui.clearMap(ctx = core.dymCanvas['status']);
-		core.ui.setFillStyle(ctx, core.status.globalAttribute.statusBarColor);
-		var offset = core.status.hero.loc.x - core.bigmap.offsetX / 32 >= core._HEIGHT_ ? 0 : core._PY_;
-		core.ui.setAlpha(ctx, 0.75);
-		core.ui.drawWindowSkin('winskin.png', ctx, offset, 0, core._PX_ - core._PY_, core._PY_);
-		core.ui.setAlpha(ctx, 1);
-		core.drawImage(ctx, core.statusBar.icons.floor, 6 + offset, 9, 25, 25);
-		fill((core.status.thisMap || {}).name || "Loading", 42 + offset, 29);
-		core.drawImage(ctx, core.statusBar.icons.hp, 6 + offset, 43, 25, 25);
-		fill(core.formatBigNumber(core.getRealStatus('hp')), 42 + offset, 63);
-		core.drawImage(ctx, core.statusBar.icons.atk, 6 + offset, 77, 25, 25);
-		fill(core.formatBigNumber(core.getRealStatus('atk')), 42 + offset, 97);
-		core.drawImage(ctx, core.statusBar.icons.def, 6 + offset, 111, 25, 25);
-		fill(core.formatBigNumber(core.getRealStatus('def')), 42 + offset, 131);
-		core.drawImage(ctx, core.statusBar.icons.mdef, 6 + offset, 145, 25, 25);
-		fill(core.formatBigNumber(core.getRealStatus('mdef')), 42 + offset, 165);
-		core.drawImage(ctx, core.statusBar.icons.money, 6 + offset, 179, 25, 25);
-		fill(core.formatBigNumber(core.status.hero.money), 42 + offset, 199);
-		core.drawImage(ctx, core.statusBar.icons.exp, 6 + offset, 213, 25, 25);
-		fill(core.formatBigNumber(core.status.hero.exp), 42 + offset, 233);
-		fill(core.setTwoDigits(core.itemCount('yellowKey')), 11 + offset, 267, '#FFCCAA');
-		fill(core.setTwoDigits(core.itemCount('blueKey')), 46 + offset, 267, '#AAAADD');
-		fill(core.setTwoDigits(core.itemCount('redKey')), 81 + offset, 267, '#FF8888');
-	}
-},
+			var ctx, fill = function (text, x, y, style) {
+				core.ui.setFont(ctx, (/\w+/.test(text) ? 'italic ' : '') + 'bold 18px Verdana');
+				core.ui.fillBoldText(ctx, text, x, y, style);
+			};
+			if (core.flags.statusCanvas) { // 系统开关「自绘状态栏」开启
+				core.ui.clearMap(ctx = core.dom.statusCanvasCtx); // 清空状态栏
+				core.ui.setFillStyle(ctx, core.status.globalAttribute.statusBarColor);
+				if (core.domStyle.isVertical) { // 竖屏
+					core.drawImage(ctx, core.statusBar.icons.floor, 6, 6, 25, 25);
+					fill((core.status.thisMap || {}).name || "Loading", 42, 26);
+					core.drawImage(ctx, core.statusBar.icons.hp, 137, 6, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('hp')), 173, 26);
+					core.drawImage(ctx, core.statusBar.icons.atk, 268, 6, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('atk')), 304, 26);
+					core.drawImage(ctx, core.statusBar.icons.def, 6, 38, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('def')), 42, 58);
+					core.drawImage(ctx, core.statusBar.icons.mdef, 137, 38, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('mdef')), 173, 58);
+					core.drawImage(ctx, core.statusBar.icons.money, 268, 38, 25, 25);
+					fill(core.formatBigNumber(core.status.hero.money), 304, 58);
+					core.drawImage(ctx, core.statusBar.icons.exp, 6, 70, 25, 25);
+					fill(core.formatBigNumber(core.status.hero.exp), 42, 90);
+				} else if (!core.flags.extendToolbar) { // 横屏且未隐藏状态栏
+					core.drawImage(ctx, core.statusBar.icons.floor, 6, 9, 25, 25);
+					fill((core.status.thisMap || {}).name || "Loading", 42, 29);
+					core.drawImage(ctx, core.statusBar.icons.hp, 6, 43, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('hp')), 42, 63);
+					core.drawImage(ctx, core.statusBar.icons.atk, 6, 77, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('atk')), 42, 97);
+					core.drawImage(ctx, core.statusBar.icons.def, 6, 111, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('def')), 42, 131);
+					core.drawImage(ctx, core.statusBar.icons.mdef, 6, 145, 25, 25);
+					fill(core.formatBigNumber(core.getRealStatus('mdef')), 42, 165);
+					core.drawImage(ctx, core.statusBar.icons.money, 6, 179, 25, 25);
+					fill(core.formatBigNumber(core.status.hero.money), 42, 199);
+					core.drawImage(ctx, core.statusBar.icons.exp, 6, 213, 25, 25);
+					fill(core.formatBigNumber(core.status.hero.exp), 42, 233);
+					fill(core.setTwoDigits(core.itemCount('yellowKey')), 11, 267, '#FFCCAA');
+					fill(core.setTwoDigits(core.itemCount('blueKey')), 46, 267, '#AAAADD');
+					fill(core.setTwoDigits(core.itemCount('redKey')), 81, 267, '#FF8888');
+				}
+			} else if (core.flags.extendToolbar && !core.domStyle.isVertical) { // 横屏且隐藏状态栏
+				if (!core.dymCanvas['status'])
+					core.ui.createCanvas('status', 0, 0, core._PX_, core._PY_, 66); // 刚好盖过显伤层
+				core.ui.clearMap(ctx = core.dymCanvas['status']);
+				core.ui.setFillStyle(ctx, core.status.globalAttribute.statusBarColor);
+				var offset = core.status.hero.loc.x - core.bigmap.offsetX / 32 >= core._HEIGHT_ ? 0 : core._PY_;
+				core.ui.setAlpha(ctx, 0.75);
+				core.ui.drawWindowSkin('winskin.png', ctx, offset, 0, core._PX_ - core._PY_, core._PY_);
+				core.ui.setAlpha(ctx, 1);
+				core.drawImage(ctx, core.statusBar.icons.floor, 6 + offset, 9, 25, 25);
+				fill((core.status.thisMap || {}).name || "Loading", 42 + offset, 29);
+				core.drawImage(ctx, core.statusBar.icons.hp, 6 + offset, 43, 25, 25);
+				fill(core.formatBigNumber(core.getRealStatus('hp')), 42 + offset, 63);
+				core.drawImage(ctx, core.statusBar.icons.atk, 6 + offset, 77, 25, 25);
+				fill(core.formatBigNumber(core.getRealStatus('atk')), 42 + offset, 97);
+				core.drawImage(ctx, core.statusBar.icons.def, 6 + offset, 111, 25, 25);
+				fill(core.formatBigNumber(core.getRealStatus('def')), 42 + offset, 131);
+				core.drawImage(ctx, core.statusBar.icons.mdef, 6 + offset, 145, 25, 25);
+				fill(core.formatBigNumber(core.getRealStatus('mdef')), 42 + offset, 165);
+				core.drawImage(ctx, core.statusBar.icons.money, 6 + offset, 179, 25, 25);
+				fill(core.formatBigNumber(core.status.hero.money), 42 + offset, 199);
+				core.drawImage(ctx, core.statusBar.icons.exp, 6 + offset, 213, 25, 25);
+				fill(core.formatBigNumber(core.status.hero.exp), 42 + offset, 233);
+				fill(core.setTwoDigits(core.itemCount('yellowKey')), 11 + offset, 267, '#FFCCAA');
+				fill(core.setTwoDigits(core.itemCount('blueKey')), 46 + offset, 267, '#AAAADD');
+				fill(core.setTwoDigits(core.itemCount('redKey')), 81 + offset, 267, '#FF8888');
+			}
+		},
         "drawStatistics": function () {
 			// 浏览地图时参与的统计项目
 

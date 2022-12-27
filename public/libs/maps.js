@@ -35,13 +35,14 @@ maps.prototype._resetFloorImages = function () {
     }
 }
 
-maps.prototype._setHDCanvasSize = function (ctx, width, height, isTempCanvas) {
+maps.prototype._setHDCanvasSize = function (ctx, width, height, isTempCanvas, nonAntiAliasing) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     var ratio = core.domStyle.ratio;
     if (ctx === core.bigmap.tempCanvas) ratio = core.domStyle.scale;
     if (isTempCanvas) ratio = core.domStyle.ratio;
     if (width != null) ctx.canvas.width = width * ratio;
     if (height != null) ctx.canvas.height = height * ratio;
+    if (nonAntiAliasing) ctx.imageSmoothingEnabled = false;
     ctx.scale(ratio, ratio);
     ctx.canvas.setAttribute('isHD', 1);
 }
@@ -50,7 +51,7 @@ maps.prototype._setHDCanvasSize = function (ctx, width, height, isTempCanvas) {
 
 ////// 加载某个楼层（从剧本或存档中） //////
 maps.prototype.loadFloor = function (floorId, map) {
-    var floor = core.floors[floorId];
+    var floor = core.clone(core.floors[floorId]);
     if (!map) map = core.cloneArray(floor.map);
     if (map instanceof Array) {
         map = { "map": map };
@@ -1994,8 +1995,19 @@ maps.prototype.getBlockInfo = function (block) {
     }
 
     return {
-        number: number, id: id, cls: cls, name: name, image: image, posX: posX, doorInfo: doorInfo,
-        posY: posY, height: height, faceIds: faceIds, animate: animate, face: face, bigImage: bigImage
+        number,
+        id,
+        cls,
+        name,
+        image,
+        posX,
+        doorInfo,
+        posY,
+        height,
+        faceIds,
+        animate,
+        face,
+        bigImage
     };
 }
 

@@ -124,7 +124,7 @@ interface Items {
      * @param callback 道具使用完毕或使用失败后的回调函数，好像没什么意义吧（
      */
     useItem(
-        itemId: AllIdsOf<'items'>,
+        itemId: ItemIdOf<'tools' | 'constants'>,
         noRoute?: boolean,
         callback?: () => void
     ): void;

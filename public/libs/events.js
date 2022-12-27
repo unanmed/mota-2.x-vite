@@ -3088,7 +3088,7 @@ events.prototype.moveEnemyOnPoint = function (fromX, fromY, toX, toY, floorId, n
 }
 
 ////// 设置楼层属性 //////
-events.prototype.setFloorInfo = function (name, value, floorId, prefix) {
+events.prototype.setFloorInfo = function (name, value, floorId) {
     floorId = floorId || core.status.floorId;
     core.status.maps[floorId][name] = value;
     core.updateStatusBar();

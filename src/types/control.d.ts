@@ -173,6 +173,16 @@ interface WeatherAction {
     initFunc: (level: WeatherLevel) => void;
 }
 
+interface FrameObj {
+    angle: number;
+    index: number;
+    mirror: number;
+    opacity: number;
+    x: number;
+    y: number;
+    zoom: number;
+}
+
 /**
  * 主要用来进行游戏控制，比如行走控制、自动寻路、存读档等等游戏核心内容
  */
@@ -302,7 +312,7 @@ interface Control {
     /**
      * 尝试前进一步，如果面前不可被踏入就会直接触发该点事件
      * @example core.moveAction(core.doAction); // 尝试前进一步，然后继续事件处理
-     * @param callback 走一步后的回调函数，可选
+     * @param callback 走一步后的回调函数
      */
     moveAction(callback?: () => void): void;
 

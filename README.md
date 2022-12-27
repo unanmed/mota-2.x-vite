@@ -24,7 +24,7 @@
 ### 进入开发环境
 
 1. 首先需要安装 node.js，图文教程见 https://h5mota.com/bbs/thread/?tid=921&p=1
-2. 右键 windows 图标，选择打开终端，运行 `npm i -g pnpm`，等待安装完成
+2. 右键 windows 图标，选择打开终端或打开 powershell，运行 `npm i -g pnpm`，等待安装完成
 3. 用 vscode 打开项目文件夹，修改 mota.config.ts 中的塔 name，并保证与全塔属性中的相同，否则上传到网站之后可能无法进行游玩
 4. 使用 ctrl+j 快捷键打开 vscode 底栏，并选择终端选项（Terminal），运行 pnpm i，安装依赖包，依赖包较多，安装时长可能较长
 5. 在系统资源管理器中（不是 vscode！）打开 public 文件夹，按下 shift + 鼠标右键（win11 只按右键即可），选择在终端打开或在 powershell 打开
@@ -61,4 +61,9 @@
 ## 一键更新
 
 1. 在 script/update.ts 中修改你的用户 id 和密码
-2. 执行 pnpm update 即可自动发自助更新，之后通知管理员审核即可
+2. 先执行 pnpm build，再执行 pnpm update 即可自动发自助更新，之后通知管理员审核即可
+
+## 接档说明
+
+1. 把 public 文件夹下除 server.cjs 外的文件复制到新样板，或者将不是用 vite 样板造的塔全部复制到 public 文件夹
+2. 命令行运行 pnpm i 和 pnpm declare 即可

@@ -30,7 +30,7 @@ type AllIds = keyof IdToNumber;
 /**
  * 所有的道具数字
  */
-type AllNumbers = keyof NumberToId;
+type AllNumbers = keyof NumberToId | 0;
 
 /**
  * 某种类型的图块的id
@@ -72,3 +72,27 @@ type NameMapIn<T extends string> = keyof {
  * 所有的怪物id
  */
 type EnemyIds = AllIdsOf<'enemys' | 'enemy48'>;
+
+/**
+ * 各种图块的动画数量
+ */
+interface FrameNumbers {
+    autotile: 4;
+    animates: 4;
+    enemys: 2;
+    items: 1;
+    npcs: 2;
+    terrains: 1;
+    enemy48: 4;
+    npc48: 4;
+}
+
+/**
+ * 动画帧数
+ */
+type FrameOf<T extends Cls> = FrameNumbers[T];
+
+/**
+ * 所有的文件名
+ */
+type SourceIds = ImageIds | AnimationIds | SoundIds | BgmIds | FontIds;
