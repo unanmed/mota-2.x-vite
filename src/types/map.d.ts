@@ -61,7 +61,7 @@ interface Block<N extends AllNumbers = AllNumbers> {
         /**
          * 图块是否不可通行
          */
-        nopass: boolean;
+        noPass: boolean;
 
         /**
          * 图块高度
@@ -147,6 +147,11 @@ interface FloorBase<T extends FloorIds = FloorIds> {
     cannotViewMap?: boolean;
 
     /**
+     * 是否不能瞬移
+     */
+    cannotMoveDirectly?: boolean;
+
+    /**
      * 是否是地下层
      */
     underGround?: boolean;
@@ -187,6 +192,11 @@ interface Floor<T extends FloorIds = FloorIds> extends FloorBase<T> {
      * 图块信息
      */
     blocks: Block[];
+
+    /**
+     * 是否被砍层
+     */
+    deleted?: boolean;
 }
 
 interface ResolvedFloor<T extends FloorIds = FloorIds> extends FloorBase<T> {
@@ -251,7 +261,7 @@ interface ResolvedFloor<T extends FloorIds = FloorIds> extends FloorBase<T> {
     eachArrive?: MotaEvent;
 }
 
-interface BlockInfo<T extends AllNumbers = AllNumbers> {
+interface BlockInfo<T extends Exclude<AllNumbers, 0> = Exclude<AllNumbers, 0>> {
     /**
      * 图块数字
      */
@@ -1317,7 +1327,7 @@ interface Maps {
         name: AnimationIds | NameMapIn<AnimationIds>,
         x: number,
         y: number,
-        alignWindow: boolean,
+        alignWindow?: boolean,
         callback?: () => void
     ): number;
 

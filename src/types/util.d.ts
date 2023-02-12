@@ -249,7 +249,7 @@ interface Utils {
      * @param onMap 显示的字符数
      * @returns 格式化结果
      */
-    formatBigNumber(x: number, onMap?: number): string;
+    formatBigNumber(x: number | string, onMap?: number): string;
 
     /**
      * @deprecated
@@ -826,7 +826,7 @@ type DeepReadonly<T> = {
 type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends number | string | boolean
         ? T[P]
-        : DeepReadonly<T[P]>;
+        : DeepPartial<T[P]>;
 };
 
 /**
@@ -835,7 +835,7 @@ type DeepPartial<T> = {
 type DeepRequired<T> = {
     [P in keyof T]-?: T[P] extends number | string | boolean
         ? T[P]
-        : DeepReadonly<T[P]>;
+        : DeepRequired<T[P]>;
 };
 
 /**
@@ -851,7 +851,7 @@ type Writable<T> = {
 type DeepWritable<T> = {
     -readonly [P in keyof T]: T[P] extends number | string | boolean
         ? T[P]
-        : DeepReadonly<T[P]>;
+        : DeepWritable<T[P]>;
 };
 
 /**

@@ -614,7 +614,7 @@ interface CoreBigmap {
     threshold: 1024;
 
     /**
-     * v2优化下，显示超出的格子数，例如样板是10，那么13*13的样板就是33*33，还用于判断是否进行更新等
+     * v2优化下，显示超出的格子数，例如样板是10，那么13\*13的样板就是33\*33，还用于判断是否进行更新等
      */
     extend: 10;
 
@@ -1448,3 +1448,9 @@ declare const maps_90f36752_8815_4be8_b32b_d7fad1d0542e: {
  * 插件信息
  */
 declare const plugins_bb40132b_638b_4a9f_b028_d3fe47acc8d1: PluginDeclaration;
+
+interface Window {
+    core: CoreMixin;
+    flags: Flags;
+    hero: HeroStatus;
+}
